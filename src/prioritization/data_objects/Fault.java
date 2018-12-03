@@ -6,6 +6,8 @@ public class Fault implements Comparable<Fault>{
 	public List<String> failures;
 	public String id;
 	
+	public Fault() { }
+	
 	public Fault(String name, List<String> failures) {
 		this.id = name;
 		this.failures = failures;
@@ -13,6 +15,12 @@ public class Fault implements Comparable<Fault>{
 	@Override
 	public String toString() {
 		return id;
+	}
+	public String getClassName() {
+		return id.split(":")[0];
+	}
+	public String getPackageName() {
+		return getClassName().substring(0, getClassName().lastIndexOf('.'));
 	}
 	@Override
 	public int compareTo(Fault f) {

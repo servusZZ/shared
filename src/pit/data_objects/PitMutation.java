@@ -29,13 +29,6 @@ public class PitMutation {
 		killingTests = new HashSet<PitTestCase>();
 		killingTestsNames = new HashSet<String>();
 	}
-	/**	adds the passed killing tests to the currently killing tests */
-	/*public void updateKillingTests(Set<PitTestCase> killingTests) {
-		if (killingTests.isEmpty()) {
-			return;
-		}
-		this.killingTests.addAll(killingTests);
-	}	*/
 	public void addKillingTest(PitTestCase newTest) {
 		killingTests.add(newTest);
 	}

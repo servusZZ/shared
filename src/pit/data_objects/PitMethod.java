@@ -28,12 +28,6 @@ public class PitMethod {
 		coveringTestsNames = new HashSet<String>();
 		mutations = new ArrayList<PitMutation>();
 	}
-	/*public void updateCoveringTests(Set<PitTestCase> newCoveringTests) {
-		if (newCoveringTests.isEmpty()) {
-			return;
-		}
-		coveringTests.addAll(newCoveringTests);
-	}	*/
 	public void addCoveringTest(PitTestCase newTest) {
 		coveringTests.add(newTest);
 	}

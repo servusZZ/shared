@@ -9,8 +9,17 @@ public class FaultyVersion {
 	private TestCase[] passedTCs;
 	private Set<Fault> faults;
 	private ProjectEvaluationEntry projectMetrics;
-	private String faultyProjectId;
 	
+	public FaultyVersion(TestCase[] failures, TestCase[] passedTCs, Set<Fault> faults,
+			ProjectEvaluationEntry projectMetrics) {
+		this.failures = failures;
+		this.passedTCs = passedTCs;
+		this.faults = faults;
+		this.projectMetrics = projectMetrics;
+	}
+	public String getFaultyVersionId() {
+		return projectMetrics.getId();
+	}
 	/**	empty Constructor and getters and setters needed for serialization */
 	public FaultyVersion() { }
 	public TestCase[] getFailures() {
@@ -36,11 +45,5 @@ public class FaultyVersion {
 	}
 	public void setProjectMetrics(ProjectEvaluationEntry projectMetrics) {
 		this.projectMetrics = projectMetrics;
-	}
-	public String getFaultyProjectId() {
-		return faultyProjectId;
-	}
-	public void setFaultyProjectId(String faultyProjectId) {
-		this.faultyProjectId = faultyProjectId;
 	}
 }

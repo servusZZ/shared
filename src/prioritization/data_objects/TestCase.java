@@ -5,13 +5,15 @@ import java.util.Set;
 
 import faulty_project.globals.FaultyProjectGlobals;
 
-public class TestCase {
-	public final String name;
-	public final boolean passed;
-	public final Boolean[] coverage;
-	public final int[] numericCoverage;
-	public final Set<Integer> coveredMethods;
-	private Fault fault = null;
+public class TestCase implements Comparable<TestCase>{
+	public String name;
+	public boolean passed;
+	public Boolean[] coverage;
+	public int[] numericCoverage;
+	public Set<Integer> coveredMethods;
+	private Set<Fault> faults = null;
+	
+	public TestCase() { }
 	
 	public TestCase(String name, boolean passed, Boolean[] coverage) {
 		this.name = name;
@@ -24,8 +26,14 @@ public class TestCase {
 		this.name = name;
 		this.passed = passed;
 		this.coveredMethods = coveredMethods;
-		this.coverage = initBooleanCoverage();
-		this.numericCoverage = initNumericCoverage();
+		this.coverage = null;
+		this.numericCoverage = null;
+	}
+	public void initBooleanAndNumericCoverage() {
+		if (coveredMethods != null) {
+			coverage = initBooleanCoverage();
+			numericCoverage = initNumericCoverage();
+		}
 	}
 	/**
 	 * Fills the coveredMethods set based on the boolean coverage.
@@ -70,10 +78,24 @@ public class TestCase {
 	public String toString() {
 		return this.name;
 	}
-	public Fault getFault() {
-		return fault;
+	public Set<Fault> getFaults() {
+		return faults;
 	}
-	public void setFault(Fault fault) {
-		this.fault = fault;
+	public void setFaults(Set<Fault> faults) {
+		this.faults = faults;
+	}
+
+	@Override
+	public int compareTo(TestCase tc) {
+		if (tc == null) {
+			return 1;
+		}
+		if (coveredMethods.size() > tc.coveredMethods.size()) {
+			return 1;
+		}
+		if (coveredMethods.size() == tc.coveredMethods.size()) {
+			return 0;
+		}
+		return -1;
 	}
 }

@@ -1,33 +1,27 @@
 package prioritization.evaluation;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class ProjectEvaluationEntry {
 	private String id;
 	private String projectName;
 	private int faultsCount;
+	
+	// general size metrics
 	private int failuresCount;
-	private int failuresWithMultipleFaultsCount;
 	private int passedTCsCount;
-	/**	all relevant tests for D* calculation */
-	private int testsCount;
 	/**	all relevant methods for D* calculation */
 	private int methodsCount;
-	private int minTestSize;
-	/**	the coveredMethods of the median of all Failures (median according to the TC size) */
-	private double medianOfFailuresSize;
-	/**	average value of the coveredMethods of all failures */
-	private double averageFailureSize;
-	private double ddu;
+	
+	//fault specific metrics
+	private int failuresWithMultipleFaultsCount;
 	private int faultsInSameClassPairsCount;
 	private int faultsInSamePackagePairsCount;
 	
-	public ProjectEvaluationEntry() { }
+	//test suite metrics
+	private TestSuiteEvaluationEntry testSuiteMetrics;
 	
 	public ProjectEvaluationEntry(int id, String projectName, int faultsCount,
 			int failuresCount, int failuresWithMultipleFaultsCount,
-			int passedTCsCount, int methodsCount, int minTestSize,
-			double medianOfFailuresSize, double averageFailureSize,
+			int passedTCsCount, int methodsCount,
 			int faultsInSameClassPairsCount, int faultsInSamePackagePairsCount) {
 		this.id = projectName + "-" + id;
 		this.projectName = projectName;
@@ -35,33 +29,30 @@ public class ProjectEvaluationEntry {
 		this.failuresCount = failuresCount;
 		this.failuresWithMultipleFaultsCount = failuresWithMultipleFaultsCount;
 		this.passedTCsCount = passedTCsCount;
-		this.testsCount = failuresCount + passedTCsCount;
 		this.methodsCount = methodsCount;
-		ddu = Double.NaN;
-		this.minTestSize = minTestSize;
-		this.medianOfFailuresSize = medianOfFailuresSize;
-		this.averageFailureSize = averageFailureSize;
 		this.faultsInSameClassPairsCount = faultsInSameClassPairsCount;
 		this.faultsInSamePackagePairsCount = faultsInSamePackagePairsCount;
 	}
 	public String getHeader() {
-		return "FaultyVersion-ID;ProjectName;#Faults;#Failures;#FailuresWithTwoFaults;#PassedTCs;#Tests;#Methods;DDU;MinTestSize;MedianFailureSize;AvgFailureSize;#FaultPairsSameClass;#FaultPairsSamePackage";
+		return "FaultyVersion-ID;ProjectName;#Faults;#Failures;#FailuresWithTwoFaults;#PassedTCs;#Methods;#FaultPairsSameClass;#FaultPairsSamePackage" +
+				";" + testSuiteMetrics.getHeader();
 	}
 	public String getValues() {
 		return id + ";" + projectName +
 				";" + faultsCount +
 				";" + failuresCount + ";" + failuresWithMultipleFaultsCount +
-				";" + passedTCsCount + ";" + testsCount + ";" + methodsCount +
-				";" + getGermanRepresentation(ddu) +
-				";" + minTestSize +
-				";" + getGermanRepresentation(medianOfFailuresSize) +
-				";" + getGermanRepresentation(averageFailureSize) +
-				";" + faultsInSameClassPairsCount + ";" + faultsInSamePackagePairsCount;
+				";" + passedTCsCount + ";" + methodsCount +
+				";" + faultsInSameClassPairsCount + ";" + faultsInSamePackagePairsCount +
+				";" + testSuiteMetrics.getValues();
 	}
-	private String getGermanRepresentation(double val) {
-		return StringUtils.replaceChars("" + val, '.', ',');
-	}
+	
 
+	public void setTestSuiteMetrics(TestSuiteEvaluationEntry testSuiteMetrics) {
+		this.testSuiteMetrics = testSuiteMetrics;
+	}
+	
+	/**	ONLY NEEDED FOR SERIALIZATION */
+	public ProjectEvaluationEntry() { }
 	public String getId() {
 		return id;
 	}
@@ -102,14 +93,6 @@ public class ProjectEvaluationEntry {
 		this.passedTCsCount = passedTCsCount;
 	}
 
-	public int getTestsCount() {
-		return testsCount;
-	}
-
-	public void setTestsCount(int testsCount) {
-		this.testsCount = testsCount;
-	}
-
 	public int getMethodsCount() {
 		return methodsCount;
 	}
@@ -118,44 +101,12 @@ public class ProjectEvaluationEntry {
 		this.methodsCount = methodsCount;
 	}
 
-	public int getMinTestSize() {
-		return minTestSize;
-	}
-
-	public void setMinTestSize(int minTestSize) {
-		this.minTestSize = minTestSize;
-	}
-
-	public double getDdu() {
-		return ddu;
-	}
-
-	public void setDdu(double ddu) {
-		this.ddu = ddu;
-	}
-
 	public int getFailuresWithMultipleFaultsCount() {
 		return failuresWithMultipleFaultsCount;
 	}
 
 	public void setFailuresWithMultipleFaultsCount(int failuresWithMultipleFaultsCount) {
 		this.failuresWithMultipleFaultsCount = failuresWithMultipleFaultsCount;
-	}
-
-	public double getMedianOfFailuresSize() {
-		return medianOfFailuresSize;
-	}
-
-	public void setMedianOfFailuresSize(double medianOfFailuresSize) {
-		this.medianOfFailuresSize = medianOfFailuresSize;
-	}
-
-	public double getAverageFailureSize() {
-		return averageFailureSize;
-	}
-
-	public void setAverageFailureSize(double averageFailureSize) {
-		this.averageFailureSize = averageFailureSize;
 	}
 
 	public int getFaultsInSameClassPairsCount() {
@@ -173,5 +124,8 @@ public class ProjectEvaluationEntry {
 	public void setFaultsInSamePackagePairsCount(int faultsInSamePackagePairsCount) {
 		this.faultsInSamePackagePairsCount = faultsInSamePackagePairsCount;
 	}
-	
+
+	public TestSuiteEvaluationEntry getTestSuiteMetrics() {
+		return testSuiteMetrics;
+	}
 }
